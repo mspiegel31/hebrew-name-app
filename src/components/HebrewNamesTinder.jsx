@@ -127,7 +127,7 @@ const HebrewNamesTinder = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-50 to-indigo-100 p-4">
-      <h1 className="text-3xl font-bold mb-4 text-indigo-700">Hebrew Names Finder</h1>
+      <h1 className="text-3xl font-bold mb-4 text-indigo-700">Hebrew-Friendly Name Picker</h1>
       
       {/* Filter Controls */}
       <div className="flex mb-6 bg-white rounded-full shadow-md p-1">
