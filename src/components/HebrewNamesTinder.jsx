@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Heart, X, List, Download } from 'lucide-react';
-import { biblicalNames, namesData2, modernNames } from '../data/namesData';
+import { biblicalNames } from '../data/namesData';
 
-// Combine both parts of the data array
-const allNamesData = [...biblicalNames, ...namesData2, ...modernNames];
+// Use the biblicalNames array directly
+const allNamesData = biblicalNames;
 
 // Helper function to shuffle array
 const shuffleArray = (array) => {
