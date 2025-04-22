@@ -68,23 +68,27 @@ const HebrewNamesTinder = () => {
 
   const handleLike = () => {
     if (currentNameIndex < shuffledNames.length) {
-      setLikedNames([...likedNames, shuffledNames[currentNameIndex]]);
-      moveToNextName();
+      const currentName = shuffledNames[currentNameIndex];
+      setLikedNames([...likedNames, currentName]);
+      // Remove the current name from shuffledNames
+      setShuffledNames(shuffledNames.filter((_, index) => index !== currentNameIndex));
+      // No need to increment currentNameIndex since we removed the current name
+      if (shuffledNames.length <= 1) {
+        setShowResults(true);
+      }
     }
   };
 
   const handleDislike = () => {
     if (currentNameIndex < shuffledNames.length) {
-      setDislikedNames([...dislikedNames, shuffledNames[currentNameIndex]]);
-      moveToNextName();
-    }
-  };
-
-  const moveToNextName = () => {
-    if (currentNameIndex < shuffledNames.length - 1) {
-      setCurrentNameIndex(currentNameIndex + 1);
-    } else {
-      setShowResults(true);
+      const currentName = shuffledNames[currentNameIndex];
+      setDislikedNames([...dislikedNames, currentName]);
+      // Remove the current name from shuffledNames
+      setShuffledNames(shuffledNames.filter((_, index) => index !== currentNameIndex));
+      // No need to increment currentNameIndex since we removed the current name
+      if (shuffledNames.length <= 1) {
+        setShowResults(true);
+      }
     }
   };
 
