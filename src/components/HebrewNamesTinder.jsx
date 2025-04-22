@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, ArrowRight, Heart, X, List, Filter, Download } from 'lucide-react';
+import { Heart, X, List, Download } from 'lucide-react';
 import { biblicalNames, namesData2, modernNames } from '../data/namesData';
 
 // Combine both parts of the data array
