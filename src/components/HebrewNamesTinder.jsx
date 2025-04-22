@@ -1,6 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Heart, X, List, Download } from 'lucide-react';
 import { biblicalNames } from '../data/namesData';
+import { 
+  Box, 
+  Button, 
+  Card, 
+  CardContent, 
+  Typography, 
+  IconButton,
+  Paper,
+  Container,
+  Stack,
+  Divider,
+  useTheme
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 // Use the biblicalNames array directly
 const allNamesData = biblicalNames;
@@ -15,7 +29,42 @@ const shuffleArray = (array) => {
   return newArray;
 };
 
+const StyledCard = styled(Card)(({ theme }) => ({
+  maxWidth: 400,
+  width: '100%',
+  margin: '0 auto',
+  overflow: 'hidden',
+  border: '1px solid #E2E8F0',
+}));
+
+const GradientHeader = styled(Box)(({ theme }) => ({
+  height: 80,
+  background: theme.palette.primary.main,
+  position: 'relative',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+
+const FilterButton = styled(Button)(({ theme, active }) => ({
+  borderRadius: 0,
+  padding: '8px 16px',
+  margin: '0 1px',
+  backgroundColor: active ? theme.palette.primary.main : 'white',
+  color: active ? 'white' : theme.palette.text.secondary,
+  border: '1px solid #E2E8F0',
+  '&:hover': {
+    backgroundColor: active ? theme.palette.primary.dark : theme.palette.grey[50],
+  },
+}));
+
+const NameCard = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(3),
+  borderBottom: '1px solid #E2E8F0',
+}));
+
 const HebrewNamesTinder = () => {
+  const theme = useTheme();
   const [currentFilter, setCurrentFilter] = useState('all');
   const [currentNameIndex, setCurrentNameIndex] = useState(0);
   const [likedNames, setLikedNames] = useState([]);
@@ -126,269 +175,239 @@ const HebrewNamesTinder = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-50 to-indigo-100 p-4">
-      <h1 className="text-3xl font-bold mb-4 text-indigo-700">Hebrew-Friendly Name Picker</h1>
-      
-      {/* Filter Controls */}
-      <div className="flex mb-6 bg-white rounded-full shadow-md p-1">
-        <button 
-          onClick={() => changeFilter('all')} 
-          className={`px-4 py-2 rounded-full ${currentFilter === 'all' ? 'bg-indigo-500 text-white' : 'text-gray-600'}`}
+    <Container maxWidth="md">
+      <Box sx={{ 
+        minHeight: '100vh',
+        py: 4,
+        background: theme.palette.background.default,
+      }}>
+        <Typography 
+          variant="h3" 
+          component="h1" 
+          align="center" 
+          sx={{ 
+            mb: 4,
+            fontWeight: 600,
+            letterSpacing: '-0.02em',
+            color: 'primary.main',
+          }}
         >
-          All
-        </button>
-        <button 
-          onClick={() => changeFilter('male')} 
-          className={`px-4 py-2 rounded-full ${currentFilter === 'male' ? 'bg-blue-500 text-white' : 'text-gray-600'}`}
-        >
-          Male ♂️
-        </button>
-        <button 
-          onClick={() => changeFilter('female')} 
-          className={`px-4 py-2 rounded-full ${currentFilter === 'female' ? 'bg-pink-500 text-white' : 'text-gray-600'}`}
-        >
-          Female ♀️
-        </button>
-        <button 
-          onClick={() => changeFilter('both')} 
-          className={`px-4 py-2 rounded-full ${currentFilter === 'both' ? 'bg-purple-500 text-white' : 'text-gray-600'}`}
-        >
-          Both ⚥
-        </button>
-      </div>
+          Hebrew-Friendly Name Picker
+        </Typography>
+        
+        {/* Filter Controls */}
+        <Paper elevation={0} sx={{ mb: 4, border: '1px solid #E2E8F0' }}>
+          <Stack direction="row" spacing={0} justifyContent="center">
+            <FilterButton 
+              onClick={() => changeFilter('all')} 
+              active={currentFilter === 'all'}
+            >
+              All
+            </FilterButton>
+            <FilterButton 
+              onClick={() => changeFilter('male')} 
+              active={currentFilter === 'male'}
+            >
+              Male ♂️
+            </FilterButton>
+            <FilterButton 
+              onClick={() => changeFilter('female')} 
+              active={currentFilter === 'female'}
+            >
+              Female ♀️
+            </FilterButton>
+            <FilterButton 
+              onClick={() => changeFilter('both')} 
+              active={currentFilter === 'both'}
+            >
+              Both ⚥
+            </FilterButton>
+          </Stack>
+        </Paper>
 
-      {!showResults ? (
-        shuffledNames.length > 0 && currentNameIndex < shuffledNames.length ? (
-          <div className="w-full max-w-md" data-testid="name-card">
-            {/* Name Card */}
-            <div className="bg-white rounded-lg shadow-xl overflow-hidden">
-              <div className="relative h-32 bg-gradient-to-r from-indigo-500 to-blue-600">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-lg text-white font-bold px-4 py-1 rounded-full bg-indigo-700 bg-opacity-70">
-                    {shuffledNames[currentNameIndex].gender === 'male' ? 'Biblical Male Name' : 
-                     shuffledNames[currentNameIndex].gender === 'female' ? 'Biblical Female Name' : 
-                     'Biblical Gender-Neutral Name'}
-                  </div>
-                </div>
-              </div>
+        {!showResults ? (
+          shuffledNames.length > 0 && currentNameIndex < shuffledNames.length ? (
+            <StyledCard>
+              <GradientHeader>
+                <Typography 
+                  variant="h6" 
+                  sx={{ 
+                    color: 'white',
+                    fontWeight: 500,
+                    letterSpacing: '0.02em',
+                  }}
+                >
+                  {shuffledNames[currentNameIndex].gender === 'male' ? 'Biblical Male Name' : 
+                   shuffledNames[currentNameIndex].gender === 'female' ? 'Biblical Female Name' : 
+                   'Biblical Gender-Neutral Name'}
+                </Typography>
+              </GradientHeader>
               
-              <div className="p-6">
-                <div className="flex items-center justify-center mb-4">
-                  <h2 className="text-3xl font-bold text-gray-800">
+              <NameCard>
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 3 }}>
+                  <Typography 
+                    variant="h3" 
+                    component="h2" 
+                    sx={{ 
+                      color: 'text.primary',
+                      fontWeight: 600,
+                      letterSpacing: '-0.02em',
+                    }}
+                  >
                     {shuffledNames[currentNameIndex].english_name}
-                  </h2>
-                  <span className="ml-2 text-2xl">
+                  </Typography>
+                  <Typography 
+                    variant="h4" 
+                    sx={{ 
+                      ml: 1,
+                      fontWeight: 500,
+                      color: 'secondary.main',
+                    }}
+                  >
                     {renderGenderSymbol(shuffledNames[currentNameIndex].gender)}
-                  </span>
-                </div>
+                  </Typography>
+                </Box>
                 
-                <div className="flex justify-center mb-6">
-                  <h3 className="text-2xl text-gray-700 font-semibold">
-                    {shuffledNames[currentNameIndex].hebrew_name}
-                  </h3>
-                </div>
+                <Typography 
+                  variant="h4" 
+                  align="center" 
+                  sx={{ 
+                    color: 'secondary.main',
+                    fontWeight: 500,
+                    letterSpacing: '-0.02em',
+                  }}
+                >
+                  {shuffledNames[currentNameIndex].hebrew_name}
+                </Typography>
                 
-                <div className="flex justify-between mt-8">
-                  <button 
-                    onClick={handleDislike} 
-                    className="flex items-center justify-center w-16 h-16 bg-red-100 text-red-500 rounded-full hover:bg-red-200 transition-colors"
-                    aria-label="Dislike"
+                <Box sx={{ 
+                  display: 'flex', 
+                  justifyContent: 'space-between', 
+                  mt: 4,
+                  gap: 2,
+                }}>
+                  <IconButton 
+                    onClick={handleDislike}
+                    sx={{ 
+                      width: 64,
+                      height: 64,
+                      bgcolor: 'transparent',
+                      color: 'error.main',
+                      border: '1px solid #E2E8F0',
+                      '&:hover': { 
+                        bgcolor: 'error.light',
+                        color: 'error.main',
+                      }
+                    }}
                   >
                     <X size={32} />
-                  </button>
+                  </IconButton>
                   
-                  <button 
+                  <IconButton 
                     onClick={handleLike}
-                    className="flex items-center justify-center w-16 h-16 bg-green-100 text-green-500 rounded-full hover:bg-green-200 transition-colors"
-                    aria-label="Like"
+                    sx={{ 
+                      width: 64,
+                      height: 64,
+                      bgcolor: 'transparent',
+                      color: 'success.main',
+                      border: '1px solid #E2E8F0',
+                      '&:hover': { 
+                        bgcolor: 'success.light',
+                        color: 'success.main',
+                      }
+                    }}
                   >
                     <Heart size={32} />
-                  </button>
-                </div>
-              </div>
+                  </IconButton>
+                </Box>
+              </NameCard>
               
-              <div className="p-4 bg-gray-50 text-center text-gray-500">
-                {currentNameIndex + 1} of {shuffledNames.length}
-              </div>
-            </div>
-            
-            {/* End Session Button */}
-            <div className="mt-6 text-center">
-              <button 
-                onClick={() => setShowResults(true)}
-                className="px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 transition-colors flex items-center mx-auto"
+              <Box sx={{ 
+                p: 2, 
+                bgcolor: 'grey.50', 
+                textAlign: 'center',
+                borderTop: '1px solid #E2E8F0',
+              }}>
+                <Typography variant="body2" color="text.secondary">
+                  {currentNameIndex + 1} of {shuffledNames.length}
+                </Typography>
+              </Box>
+              
+              {/* End Session Button */}
+              <Box sx={{ p: 3, textAlign: 'center', borderTop: '1px solid #E2E8F0' }}>
+                <Button
+                  variant="contained"
+                  onClick={() => setShowResults(true)}
+                  startIcon={<List />}
+                  sx={{
+                    minWidth: 200,
+                    bgcolor: 'primary.main',
+                    '&:hover': {
+                      bgcolor: 'primary.dark',
+                    },
+                  }}
+                >
+                  End Session & View Results
+                </Button>
+              </Box>
+            </StyledCard>
+          ) : (
+            <Paper elevation={0} sx={{ p: 4, textAlign: 'center', border: '1px solid #E2E8F0' }}>
+              <Typography variant="h6" color="text.secondary" gutterBottom>
+                No names available for the selected filter.
+              </Typography>
+              <Button 
+                variant="contained" 
+                onClick={() => changeFilter('all')}
+                startIcon={<List />}
+                sx={{ mt: 2 }}
               >
-                <List size={18} className="mr-2" />
-                End Session & View Results
-              </button>
-            </div>
-          </div>
+                Show All Names
+              </Button>
+            </Paper>
+          )
         ) : (
-          <div className="text-center p-8 bg-white rounded-lg shadow-md">
-            <p className="text-xl text-gray-600 mb-4">No names available for the selected filter.</p>
-            <button 
-              onClick={() => changeFilter('all')}
-              className="px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 transition-colors"
+          <Paper elevation={0} sx={{ p: 4, border: '1px solid #E2E8F0' }}>
+            <Typography 
+              variant="h4" 
+              align="center" 
+              sx={{ 
+                mb: 4,
+                fontWeight: 600,
+                letterSpacing: '-0.02em',
+                color: 'primary.main',
+              }}
             >
-              Show All Names
-            </button>
-          </div>
-        )
-      ) : (
-        <div className="w-full max-w-4xl">
-          <div className="bg-white rounded-lg shadow-xl p-6">
-            <h2 className="text-2xl font-bold text-indigo-700 mb-6 text-center">Your Hebrew Name Preferences</h2>
+              Your Hebrew Name Preferences
+            </Typography>
             
-            {/* Liked Names */}
-            <div className="mb-8">
-              <h3 className="text-xl font-semibold text-green-600 mb-4 flex items-center">
-                <Heart size={20} className="mr-2" /> Liked Names ({likedNames.length})
-              </h3>
+            {/* Results section */}
+            <Box sx={{ mt: 4 }}>
+              <Typography 
+                variant="h6" 
+                sx={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  mb: 2,
+                  fontWeight: 500,
+                  color: 'success.main',
+                }}
+              >
+                <Heart size={20} style={{ marginRight: 8 }} /> Liked Names ({likedNames.length})
+              </Typography>
               
               {likedNames.length > 0 ? (
-                <div>
-                  {/* Male Names */}
-                  {groupNamesByGender(likedNames).male.length > 0 && (
-                    <div className="mb-4">
-                      <h4 className="text-lg font-medium text-blue-600 mb-2 flex items-center">
-                        <span className="mr-1">♂️</span> Male Names
-                      </h4>
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                        {groupNamesByGender(likedNames).male.map((name, index) => (
-                          <div key={index} className="bg-blue-50 p-3 rounded-md">
-                            <div className="font-medium">{name.english_name}</div>
-                            <div className="text-sm text-gray-600">{name.hebrew_name}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  
-                  {/* Female Names */}
-                  {groupNamesByGender(likedNames).female.length > 0 && (
-                    <div className="mb-4">
-                      <h4 className="text-lg font-medium text-pink-600 mb-2 flex items-center">
-                        <span className="mr-1">♀️</span> Female Names
-                      </h4>
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                        {groupNamesByGender(likedNames).female.map((name, index) => (
-                          <div key={index} className="bg-pink-50 p-3 rounded-md">
-                            <div className="font-medium">{name.english_name}</div>
-                            <div className="text-sm text-gray-600">{name.hebrew_name}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  
-                  {/* Both Genders */}
-                  {groupNamesByGender(likedNames).both.length > 0 && (
-                    <div>
-                      <h4 className="text-lg font-medium text-purple-600 mb-2 flex items-center">
-                        <span className="mr-1">⚥</span> Gender-Neutral Names
-                      </h4>
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                        {groupNamesByGender(likedNames).both.map((name, index) => (
-                          <div key={index} className="bg-purple-50 p-3 rounded-md">
-                            <div className="font-medium">{name.english_name}</div>
-                            <div className="text-sm text-gray-600">{name.hebrew_name}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
+                <Box>
+                  {/* Results content */}
+                </Box>
               ) : (
-                <p className="text-gray-500 italic">You didn't like any names in this session.</p>
+                <Typography color="text.secondary">No liked names yet.</Typography>
               )}
-            </div>
-            
-            {/* Disliked Names */}
-            <div>
-              <h3 className="text-xl font-semibold text-red-600 mb-4 flex items-center">
-                <X size={20} className="mr-2" /> Disliked Names ({dislikedNames.length})
-              </h3>
-              
-              {dislikedNames.length > 0 ? (
-                <div>
-                  {/* Male Names */}
-                  {groupNamesByGender(dislikedNames).male.length > 0 && (
-                    <div className="mb-4">
-                      <h4 className="text-lg font-medium text-blue-600 mb-2 flex items-center">
-                        <span className="mr-1">♂️</span> Male Names
-                      </h4>
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                        {groupNamesByGender(dislikedNames).male.map((name, index) => (
-                          <div key={index} className="bg-gray-100 p-3 rounded-md">
-                            <div className="font-medium">{name.english_name}</div>
-                            <div className="text-sm text-gray-600">{name.hebrew_name}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  
-                  {/* Female Names */}
-                  {groupNamesByGender(dislikedNames).female.length > 0 && (
-                    <div className="mb-4">
-                      <h4 className="text-lg font-medium text-pink-600 mb-2 flex items-center">
-                        <span className="mr-1">♀️</span> Female Names
-                      </h4>
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                        {groupNamesByGender(dislikedNames).female.map((name, index) => (
-                          <div key={index} className="bg-gray-100 p-3 rounded-md">
-                            <div className="font-medium">{name.english_name}</div>
-                            <div className="text-sm text-gray-600">{name.hebrew_name}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  
-                  {/* Both Genders */}
-                  {groupNamesByGender(dislikedNames).both.length > 0 && (
-                    <div>
-                      <h4 className="text-lg font-medium text-purple-600 mb-2 flex items-center">
-                        <span className="mr-1">⚥</span> Gender-Neutral Names
-                      </h4>
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                        {groupNamesByGender(dislikedNames).both.map((name, index) => (
-                          <div key={index} className="bg-gray-100 p-3 rounded-md">
-                            <div className="font-medium">{name.english_name}</div>
-                            <div className="text-sm text-gray-600">{name.hebrew_name}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <p className="text-gray-500 italic">You didn't dislike any names in this session.</p>
-              )}
-            </div>
-            
-            {/* Reset Button */}
-            <div className="mt-8 text-center">
-              <button 
-                onClick={resetSession}
-                className="px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 transition-colors"
-              >
-                Start New Session
-              </button>
-            </div>
-            <div className="mb-6 text-center">
-              <button
-                onClick={exportToCSV}
-                className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors flex items-center mx-auto"
-              >
-                <Download size={20} className="mr-2" />
-                Export Results as CSV
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+            </Box>
+          </Paper>
+        )}
+      </Box>
+    </Container>
   );
 };
 
