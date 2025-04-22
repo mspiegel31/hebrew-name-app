@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, ArrowRight, Heart, X, List, Filter } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Heart, X, List, Filter, Download } from 'lucide-react';
 import { namesData, namesData2 } from '../data/namesData';
 
 // Combine both parts of the data array
@@ -23,6 +23,27 @@ const HebrewNamesTinder = () => {
   const [showResults, setShowResults] = useState(false);
   const [filteredNames, setFilteredNames] = useState([]);
   const [shuffledNames, setShuffledNames] = useState([]);
+
+  const exportToCSV = () => {
+    const headers = ['English Name', 'Hebrew Name', 'Gender'];
+    const csvContent = [
+      headers.join(','),
+      ...likedNames.map(name => [
+        `"${name.english_name}"`,
+        `"${name.hebrew_name}"`,
+        `"${name.gender}"`
+      ].join(','))
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'hebrew_names_results.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   // Initialize filtered and shuffled names based on selected filter
   useEffect(() => {
@@ -348,6 +369,15 @@ const HebrewNamesTinder = () => {
                 className="px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 transition-colors"
               >
                 Start New Session
+              </button>
+            </div>
+            <div className="mb-6 text-center">
+              <button
+                onClick={exportToCSV}
+                className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors flex items-center mx-auto"
+              >
+                <Download size={20} className="mr-2" />
+                Export Results as CSV
               </button>
             </div>
           </div>
