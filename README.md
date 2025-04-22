@@ -12,10 +12,10 @@ A React-based web application for exploring and discovering Hebrew-friendly name
 - **Responsive Design**: Works smoothly on both desktop and mobile devices
 
 ## What problem are we solving?
-My spouse really likes names in english that have a direct translation to Hebrew.  Most of the tinder clone name picker apps out there didn't work for her for two reasons:
+My spouse really likes names in english that have a direct translation to Hebrew.  Most of the tinder-clone name picker apps out there didn't work for her because:
 
 1. The apps are sometimes paid.
-1. The apps require you to purchase "name packs" for an additional fee
+1. The apps require you to purchase "name packs" for an additional fee.
 1. These name packs didn't usually have the specific names she was looking for.
 
 ## What is this then?
