@@ -5,6 +5,16 @@ import { namesData, namesData2 } from '../data/namesData';
 // Combine both parts of the data array
 const allNamesData = [...namesData, ...namesData2];
 
+// Helper function to shuffle array
+const shuffleArray = (array) => {
+  const newArray = [...array];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
+};
+
 const HebrewNamesTinder = () => {
   const [currentFilter, setCurrentFilter] = useState('all');
   const [currentNameIndex, setCurrentNameIndex] = useState(0);
@@ -12,7 +22,9 @@ const HebrewNamesTinder = () => {
   const [dislikedNames, setDislikedNames] = useState([]);
   const [showResults, setShowResults] = useState(false);
   const [filteredNames, setFilteredNames] = useState([]);
+  const [shuffledNames, setShuffledNames] = useState([]);
 
+  // Initialize filtered and shuffled names based on selected filter
   useEffect(() => {
     let filtered;
     
@@ -22,26 +34,33 @@ const HebrewNamesTinder = () => {
       filtered = allNamesData.filter(name => name.gender === currentFilter);
     }
     
+    // Shuffle the filtered names
+    const shuffled = shuffleArray(filtered);
+    
     setCurrentNameIndex(0);
     setFilteredNames(filtered);
+    setShuffledNames(shuffled);
+    setLikedNames([]);
+    setDislikedNames([]);
+    setShowResults(false);
   }, [currentFilter]);
 
   const handleLike = () => {
-    if (currentNameIndex < filteredNames.length) {
-      setLikedNames([...likedNames, filteredNames[currentNameIndex]]);
+    if (currentNameIndex < shuffledNames.length) {
+      setLikedNames([...likedNames, shuffledNames[currentNameIndex]]);
       moveToNextName();
     }
   };
 
   const handleDislike = () => {
-    if (currentNameIndex < filteredNames.length) {
-      setDislikedNames([...dislikedNames, filteredNames[currentNameIndex]]);
+    if (currentNameIndex < shuffledNames.length) {
+      setDislikedNames([...dislikedNames, shuffledNames[currentNameIndex]]);
       moveToNextName();
     }
   };
 
   const moveToNextName = () => {
-    if (currentNameIndex < filteredNames.length - 1) {
+    if (currentNameIndex < shuffledNames.length - 1) {
       setCurrentNameIndex(currentNameIndex + 1);
     } else {
       setShowResults(true);
@@ -49,6 +68,9 @@ const HebrewNamesTinder = () => {
   };
 
   const resetSession = () => {
+    // Reshuffle the names when starting a new session
+    const shuffled = shuffleArray(filteredNames);
+    setShuffledNames(shuffled);
     setCurrentNameIndex(0);
     setLikedNames([]);
     setDislikedNames([]);
@@ -57,9 +79,6 @@ const HebrewNamesTinder = () => {
 
   const changeFilter = (filter) => {
     setCurrentFilter(filter);
-    setShowResults(false);
-    setLikedNames([]);
-    setDislikedNames([]);
   };
 
   const groupNamesByGender = (names) => {
@@ -113,15 +132,15 @@ const HebrewNamesTinder = () => {
       </div>
 
       {!showResults ? (
-        filteredNames.length > 0 && currentNameIndex < filteredNames.length ? (
+        shuffledNames.length > 0 && currentNameIndex < shuffledNames.length ? (
           <div className="w-full max-w-md">
             {/* Name Card */}
             <div className="bg-white rounded-lg shadow-xl overflow-hidden">
               <div className="relative h-32 bg-gradient-to-r from-indigo-500 to-blue-600">
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-lg text-white font-bold px-4 py-1 rounded-full bg-indigo-700 bg-opacity-70">
-                    {filteredNames[currentNameIndex].gender === 'male' ? 'Biblical Male Name' : 
-                     filteredNames[currentNameIndex].gender === 'female' ? 'Biblical Female Name' : 
+                    {shuffledNames[currentNameIndex].gender === 'male' ? 'Biblical Male Name' : 
+                     shuffledNames[currentNameIndex].gender === 'female' ? 'Biblical Female Name' : 
                      'Biblical Gender-Neutral Name'}
                   </div>
                 </div>
@@ -130,16 +149,16 @@ const HebrewNamesTinder = () => {
               <div className="p-6">
                 <div className="flex items-center justify-center mb-4">
                   <h2 className="text-3xl font-bold text-gray-800">
-                    {filteredNames[currentNameIndex].english_name}
+                    {shuffledNames[currentNameIndex].english_name}
                   </h2>
                   <span className="ml-2 text-2xl">
-                    {renderGenderSymbol(filteredNames[currentNameIndex].gender)}
+                    {renderGenderSymbol(shuffledNames[currentNameIndex].gender)}
                   </span>
                 </div>
                 
                 <div className="flex justify-center mb-6">
                   <h3 className="text-2xl text-gray-700 font-semibold">
-                    {filteredNames[currentNameIndex].hebrew_name}
+                    {shuffledNames[currentNameIndex].hebrew_name}
                   </h3>
                 </div>
                 
@@ -163,7 +182,7 @@ const HebrewNamesTinder = () => {
               </div>
               
               <div className="p-4 bg-gray-50 text-center text-gray-500">
-                {currentNameIndex + 1} of {filteredNames.length}
+                {currentNameIndex + 1} of {shuffledNames.length}
               </div>
             </div>
             
