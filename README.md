@@ -19,7 +19,7 @@ My spouse really likes names in english that have a direct translation to Hebrew
 1. These name packs didn't usually have the specific names she was looking for.
 
 ## What is this then?
-This turned out to be a great problem to ~vibe-code~ leverage AI coding assistants to solve!  Claude code turned out to be pretty great at parsing screenshots/JPGs of "popular hebrew names" and feeding them into the dataset in `data/`.  After that it was fairly simple to get the application working as a static build and hosted here on Github
+This turned out to be a great problem to ~vibe-code~ leverage AI coding assistants to solve!  Claude code is pretty great at parsing screenshots/JPGs of "popular hebrew names" and feeding them into the dataset in `data/`.  After that it was fairly simple to get the application working as a static build and hosted here on Github
 
 ## Getting Started
 
