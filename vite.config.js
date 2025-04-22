@@ -9,5 +9,5 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './src/setupTests.js',
   },
-  base: '/hebrew-name-app/',
+  base: process.env.VITE_BASE_URL || '/',
 }) 

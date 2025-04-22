@@ -33,7 +33,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          REACT_APP_BASE_URL: '/hebrew-name-app/'
+          VITE_BASE_URL: '/hebrew-name-app/'
       
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -41,7 +41,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './build'
+          path: './dist'
 
   deploy:
     environment:
