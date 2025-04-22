@@ -43,6 +43,7 @@ const HebrewNamesTinder = () => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   // Initialize filtered and shuffled names based on selected filter
@@ -158,7 +159,7 @@ const HebrewNamesTinder = () => {
 
       {!showResults ? (
         shuffledNames.length > 0 && currentNameIndex < shuffledNames.length ? (
-          <div className="w-full max-w-md">
+          <div className="w-full max-w-md" data-testid="name-card">
             {/* Name Card */}
             <div className="bg-white rounded-lg shadow-xl overflow-hidden">
               <div className="relative h-32 bg-gradient-to-r from-indigo-500 to-blue-600">
