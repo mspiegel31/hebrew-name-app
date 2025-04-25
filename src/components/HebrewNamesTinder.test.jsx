@@ -1,7 +1,7 @@
 import React, { act } from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import HebrewNamesTinder from './HebrewNamesTinder';
-import { biblicalNames } from '../data/namesData';
+import { hebrewNames } from '../data/namesData';
 
 // Mock URL.createObjectURL and Blob
 const mockCreateObjectURL = jest.fn();
@@ -28,7 +28,7 @@ jest.mock('../data/namesData', () => {
   ];
   
   return {
-    biblicalNames: mockNames
+    hebrewNames: mockNames
   };
 });
 
@@ -111,7 +111,7 @@ describe('HebrewNamesTinder', () => {
     });
     
     // Rate all names
-    const names = biblicalNames;
+    const names = hebrewNames;
     for (let i = 0; i < names.length; i++) {
       const likeButton = screen.getByLabelText('Like');
       await act(async () => {
@@ -156,7 +156,7 @@ describe('HebrewNamesTinder', () => {
     });
     
     // Rate all names
-    const names = biblicalNames;
+    const names = hebrewNames;
     for (let i = 0; i < names.length; i++) {
       const likeButton = screen.getByLabelText('Like');
       await act(async () => {

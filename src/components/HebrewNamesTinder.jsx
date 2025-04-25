@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Heart, X, List, Download } from 'lucide-react';
-import { biblicalNames } from '../data/namesData';
+import { hebrewNames } from '../data/namesData';
 
 // Use the biblicalNames array directly
-const allNamesData = biblicalNames;
+const allNamesData = hebrewNames;
 
 // Helper function to shuffle array
 const shuffleArray = (array) => {
